@@ -4,11 +4,17 @@ def call() {
             options {
                 timestamps()
             }
-            stage("Compile"){        
-                sh 'ls -lh'
-                sh 'pwd'
-                sh 'who am i'
-                sh 'date'
+            stages{
+                stage("Compile"){        
+                    steps{
+                        script{
+                            sh 'ls -lh'
+                            sh 'pwd'
+                            sh 'who am i'
+                            sh 'date'
+                        }
+                    }
+                }
             }
     }
 }
