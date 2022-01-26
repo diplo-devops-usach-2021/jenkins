@@ -1,3 +1,8 @@
 def call() {
-    echo "WHY ARE YOU CALLING THIS FUNCTION!??!"
+    stage("Compile"){        
+        sh 'ls -lh'
+        sh 'pwd'
+        sh 'who am i'
+        sh 'date'
+    }
 }
