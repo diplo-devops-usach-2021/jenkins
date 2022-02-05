@@ -22,11 +22,15 @@ def call() {
                         println 'Pipeline'
                             def ci_or_cd = verifyBranchName()
                             
+                        if(verifyBranchName()=='main'){
+                            figlet 'No se permite ejecutar desde main'
+                        } else {
                             if (params.buildTool == 'gradle'){
                                 gradle(verifyBranchName())
                             } else {
                                 def ejecucion = load 'maven.groovy'
                                 maven(verifyBranchName())
+                            }
                         }
                     }
                 }
@@ -54,8 +58,7 @@ def verifyBranchName(){
 		return 'CI'
 	} else {
         if (env.GIT_BRANCH.contains == 'main'){
-            return null
-            figlet 'No se permite ejecutar desde rama main'
+            return 'main'
         } else {
 		    return 'CD'
 	    }
