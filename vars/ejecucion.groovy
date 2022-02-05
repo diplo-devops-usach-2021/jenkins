@@ -20,7 +20,8 @@ def call() {
                 steps {
                     script {
                         println 'Pipeline'
-                            def ci_or_cd = verifyBranchName()
+                        def ci_or_cd = verifyBranchName()
+                        println ci_or_cd
                             
                         if(verifyBranchName()=='main'){
                             figlet 'No se permite ejecutar desde main'
@@ -40,7 +41,7 @@ def call() {
         post {
             always {
                 slackSend channel: '#jenkins-ci', color: 'normal', message: "${username}" + ' ha ejecutado un Pipeline.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
-                slackSend channel: '#jenkins-ci', color: 'normal', message: 'Job Name: ' + env.JOB_NAME + ', BuildTool: ' +  params.buildTool + ', rama: ' + ci_or_cd + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
+                slackSend channel: '#jenkins-ci', color: 'normal', message: 'Job Name: ' + env.JOB_NAME + ', BuildTool: ' +  params.buildTool + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
             success{
                 slackSend channel: '#jenkins-ci', color: '#29AE4A', message: 'Ejecucion exitosa de ' + verifyBranchName() + '. Se han ejecutado los siguientes Stages: ' + params.Stage + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
