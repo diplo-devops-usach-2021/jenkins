@@ -55,6 +55,7 @@ def verifyBranchName(){
 	} else {
         if (env.GIT_BRANCH.contains == 'main'){
             return null
+            figlet 'No se permite ejecutar desde rama main'
         } else {
 		    return 'CD'
 	    }
