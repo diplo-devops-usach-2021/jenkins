@@ -23,7 +23,7 @@ def call() {
                         def ci_or_cd = verifyBranchName()
                         println ci_or_cd
                             
-                        if(verifyBranchName()=='main'){
+                        if(env.GIT_BRANCH.contains == 'main'){
                             figlet 'No se permite ejecutar desde main'
                         } else {
                             if (params.buildTool == 'gradle'){
