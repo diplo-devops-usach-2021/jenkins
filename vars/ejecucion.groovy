@@ -53,7 +53,7 @@ def verifyBranchName(){
 	if (env.GIT_BRANCH.contains('feature-') || env.GIT_BRANCH.contains('develop')){
 		return 'CI'
 	} else {
-        if (env.GIT_BRANCH == 'main'){
+        if (env.GIT_BRANCH.contains == 'main'){
             return null
         } else {
 		    return 'CD'
