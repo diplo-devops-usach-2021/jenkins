@@ -20,10 +20,8 @@ def call() {
                 steps {
                     script {
                         println 'Pipeline'
-                        def ci_or_cd = verifyBranchName()
-                        println ci_or_cd
                             
-                        if(env.GIT_BRANCH.contains == 'main'){
+                        if(verifyBranchName() == 'main'){
                             figlet 'No se permite ejecutar desde main'
                         } else {
                             if (params.buildTool == 'gradle'){
@@ -58,7 +56,7 @@ def verifyBranchName(){
 	if (env.GIT_BRANCH.contains('feature-') || env.GIT_BRANCH.contains('develop')){
 		return 'CI'
 	} else {
-        if (env.GIT_BRANCH.contains == 'main'){
+        if (env.GIT_BRANCH.contains('main')){
             return 'main'
         } else {
 		    return 'CD'
