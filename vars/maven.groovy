@@ -3,6 +3,7 @@
 	def ejecucion = load 'script.groovy'
 	ejecucion.call()
 */
+import cl.devops.*
 
 def call(String pipelineType){
 	figlet 'Maven'
@@ -61,6 +62,14 @@ def call(String pipelineType){
 		        bat "start chrome http://localhost:8081/rest/mscovid/test?msg=testing"
 			}
 		} else { println 'No ha especificado ejecutar el Stage: Test Applications' }
+
+		stage('Tareas SCM'){
+			String ramaOrigen = obtieneRamaActual()
+			git.merge(ramaOrigen, "main")
+			git.merge(ramaOrigen, "develop")
+			def pom = readMavenPom()
+			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
+		}
 	}
 } 
 return this;
