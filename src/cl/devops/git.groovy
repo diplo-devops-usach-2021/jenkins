@@ -1,6 +1,7 @@
+package cl.devops
 
 def merge(String ramaOrigen, String ramaDestino){
-    println "Este método realiza un merge ${ramaOrigen} y ${ramaDestino}"
+    println "Realizando merge ${ramaOrigen} y ${ramaDestino}"
     sh '''
         git checkout ${ramaDestino} 
         git merge ${ramaOrigen}
@@ -8,7 +9,7 @@ def merge(String ramaOrigen, String ramaDestino){
 }
 
 def tag(String version, String descripcion){
-    println "realizando Tag: ${version} descripcion:  ${descripcion}"
+    println "Realizando Tag: ${version} descripcion:  ${descripcion}"
     sh '''
         git tag -a ${version} -m "${descripcion}"
     '''
