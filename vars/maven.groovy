@@ -30,7 +30,7 @@ def call(String pipelineType){
 		if(params.Stage.contains('sonar')){
 			stage('sonar') {
 		        def scannerHome = tool 'SonarScanner';
-				def nombre = "${env.JOB_NAME}-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+				def nombre = "${env.JOB_NAME}-${env.BUILD_NUMBER}".replace("/","-")
 				withSonarQubeEnv('My SonarQube Server') {  
 					sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${nombre} -Dsonar.java.binaries=build/classes"
 				}
