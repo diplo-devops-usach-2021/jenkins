@@ -18,9 +18,7 @@ def merge(String ramaOrigen, String ramaDestino){
 
 def tag(String version, String descripcion){
     println "Realizando Tag: ${version} descripcion:  ${descripcion}"
-    bat """
-        git fetch
-        git checkout main
-        git tag -a ${version} -m "${descripcion}"
-    """
+    bat(returnStdout:false , script: "git pull origin main")
+    bat(returnStdout:false , script: "git checkout ${ramaDestino}")
+    bat(returnStdout:false , script: "git tag -a ${version} -m '${descripcion}'")
 }
