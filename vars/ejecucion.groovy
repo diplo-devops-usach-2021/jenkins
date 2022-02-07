@@ -31,14 +31,14 @@ def call() {
                         cleanWs()
                         println "Pipeline iniciado por ${USUARIO}"
                         Git git =  new Git()
-                        BRANCH = git.verifyBranchName()                      
+                        BRANCH = git.verifyBranchName()
+                        println "El nombre del branch a ejecutar : ${BRANCH}"                  
                         if(BRANCH == 'main'){
                             currentBuild.result = 'FAILURE'
                             error("No se puede ejecutar la rama MAIN")
                             if (params.buildTool == 'gradle'){
                                 gradle(BRANCH)
                             } else {
-                                def ejecucion = load 'maven.groovy'
                                 maven(BRANCH)
                             }
                         }

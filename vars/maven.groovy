@@ -36,7 +36,6 @@ def call(String pipelineType){
 				}
 			}
 		}
-
 	} else {
 		figlet 'Delivery Continuo'
 		if(params.Stage.contains('run')){		
