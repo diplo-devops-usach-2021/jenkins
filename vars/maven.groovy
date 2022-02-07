@@ -6,9 +6,10 @@
 import cl.devops.*
 
 def call(String pipelineType){
-	figlet 'Maven'
+	figlet 'Maven'	
 	Git git = new Git()
 	git.obtenerRama("${env.BRANCH_NAME}")
+	def pom = readMavenPom()
 	if (pipelineType == 'CI') {
 		figlet 'Integracion Continua'
 		if (params.Stage.contains('compile')) {
@@ -36,14 +37,13 @@ def call(String pipelineType){
 		}
 		if(params.Stage.contains('nexusUpload')){
 			stage('nexusUpload') {
-				def pom = readMavenPom()
 				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.jar", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
 			}
 		}
 		if("${env.BRANCH_NAME}".equals("develop")){
 			if(params.Stage.contains('gitCreateRelease')){
-				stage('gitCreateRelease') {
-					println "Aca deberia crear la release"
+				stage('gitCreateRelease') {					
+					git.crearRama("release-v${pom.version}")
 				}
 			}
 		}

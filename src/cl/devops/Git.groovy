@@ -35,6 +35,14 @@ def verifyBranchName(){
     }
 }
 
+def crearRama(String nombreRama){
+    withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+        sh """
+            git checkout -b ${nombreRama}
+        """
+    }
+}
+
 def obtenerRama(String rama){
     println "Obteniendo rama ${rama}"
     git branch: "${rama}", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'
