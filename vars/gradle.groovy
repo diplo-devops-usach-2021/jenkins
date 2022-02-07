@@ -11,7 +11,7 @@ def call(String pipelineType){
 		figlet 'Integracion Continua'
 		if (params.Stage.contains('build')) {
 		  stage('Compile & Unit Test & Package'){
-				sh "gradle clean build"
+				sh "./gradlew clean build"
 			}
 		} 
 		if(params.Stage.contains('sonar')){
