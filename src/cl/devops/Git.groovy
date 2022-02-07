@@ -3,14 +3,12 @@ package cl.devops
 
 def obtieneRamaActual(){
     def stdout = bat(returnStdout:true , script: 'git rev-parse --abbrev-ref HEAD').trim()
-    println stdout   
-    def result = stdout.readLines().drop(1).join(" ")
-    println result      
+    def result = stdout.readLines().drop(1).join(" ")    
     return result
 }
 
 def merge(String ramaOrigen, String ramaDestino){
-    println "Realizando merge ${ramaOrigen} y ${ramaDestino}"
+    println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
     bat(returnStdout:false , script: "git pull origin ${ramaDestino}")
     bat(returnStdout:false , script: "git checkout ${ramaDestino}")
     bat(returnStdout:false , script: "git merge ${ramaOrigen}")
