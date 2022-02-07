@@ -90,7 +90,8 @@ def call(String pipelineType){
 	  } else { println 'No ha especificado ejecutar el Stage: UPLOAD' }
 	  
 		stage('Tareas SCM') {
-			String ramaOrigen = Git.obtieneRamaActual()			
+			def ramaOrigen = Git.obtieneRamaActual()
+			println ramaOrigen		
 			Git.merge(ramaOrigen, "main".toString())
 			Git.merge(ramaOrigen, "develop".toString())
 			def pom = readMavenPom()
