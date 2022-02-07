@@ -3,7 +3,7 @@ import cl.devops.*
 def call() {
 
     def USUARIO
-    def BRANCH
+    def TIPO
 
     pipeline {
         agent any
@@ -32,7 +32,7 @@ def call() {
                         println "Pipeline iniciado por ${USUARIO}"
                         Git git =  new Git()
 
-                        if(params.Stage.contains("gitCreateRelease") && !"${env.BRANCH_NAME}".equals("develop")){
+                        if(params.Stage.contains("gitCreateRelease") && "${env.BRANCH_NAME}" != "develop"){
                             currentBuild.result = 'FAILURE'
                             error("El stage ${params.Stage} no esta disponible para otras ramas que no sea la DEVELOP")
                         }
