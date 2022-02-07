@@ -13,25 +13,21 @@ def call(String pipelineType){
 		figlet 'Integracion Continua'
 		if (params.Stage.contains('compile')) {
 			stage('compile') {
-				STAGE = env.STAGE_NAME
 		        sh "./mvnw clean compile -e"
 		    }
 		}
 		if(params.Stage.contains('unitTest')){
 			stage('unitTest') {
-				STAGE = env.STAGE_NAME
 		        sh "./mvnw clean test -e"
 		    }
 		}
 		if(params.Stage.contains('jar')){    
-		    stage('jar') {
-				STAGE = env.STAGE_NAME
+		    stage('jar') {			
 		        sh "./mvnw clean package -e -DskipTests"
 		    }
 		}
 		if(params.Stage.contains('sonar')){
 			stage('sonar') {
-				STAGE = env.STAGE_NAME
 		        def scannerHome = tool 'SonarScanner';
 				withSonarQubeEnv('My SonarQube Server') {  
 					sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.java.binaries=build/classes"
@@ -40,14 +36,15 @@ def call(String pipelineType){
 		}
 		if(params.Stage.contains('nexusUpload')){
 			stage('nexusUpload') {
-				STAGE = env.STAGE_NAME
 				def pom = readMavenPom()
 				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.jar", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
 			}
 		}
-		if(params.Stage.contains('gitCreateRelease')){
-			stage('gitCreateRelease') {
-				println "Aca deberia crear la release"
+		if("${env.BRANCH_NAME}".equals("develop")){
+			if(params.Stage.contains('gitCreateRelease')){
+				stage('gitCreateRelease') {
+					println "Aca deberia crear la release"
+				}
 			}
 		}
 	} /*else {

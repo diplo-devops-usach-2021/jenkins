@@ -31,6 +31,11 @@ def call() {
                         }                        
                         println "Pipeline iniciado por ${USUARIO}"
                         Git git =  new Git()
+
+                        if(params.Stage.contains("gitCreateRelease") && !"${env.BRANCH_NAME}".equals("develop")){
+                            currentBuild.result = 'FAILURE'
+                            error("El stage ${params.Stage} no esta disponible para otras ramas que no sea la DEVELOP")
+                        }
                         TIPO = git.verifyBranchName()
                         println "El tipo de ejecucion es: ${TIPO} ${params.buildTool}"                  
                         if(TIPO == 'OTRO'){
