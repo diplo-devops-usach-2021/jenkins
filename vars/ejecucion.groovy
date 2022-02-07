@@ -14,7 +14,7 @@ def call() {
 
         parameters {
 		    choice choices: ['gradle', 'maven'], description: 'Indicar la herramienta de construccion.', name: 'buildTool'
-		    string(name: 'Stage', defaultValue: '', description: 'Ingresar los Stages de ejecucion')
+		    string(name: 'Stage', defaultValue: 'compile unitTest jar sonar nexusUpload gitCreateRelease', description: 'Ingresar los Stages de ejecucion')
 		}
 
         options {
