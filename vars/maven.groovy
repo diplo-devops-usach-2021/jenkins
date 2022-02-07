@@ -7,6 +7,8 @@ import cl.devops.*
 
 def call(String pipelineType){
 	figlet 'Maven'
+	Git git =  new Git()
+	git.obtenerRama("${env.BRANCH_NAME}")
 	if (pipelineType == 'CI') {
 		figlet 'Integracion Continua'
 		if (params.Stage.contains('compile')) {

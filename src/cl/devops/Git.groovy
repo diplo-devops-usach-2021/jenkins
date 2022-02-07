@@ -2,8 +2,8 @@ package cl.devops
 
 
 def merge(String ramaOrigen, String ramaDestino){
-    println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
-    git branch: "${ramaDestino}", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'
+    println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"    
+    obtenerRama(ramaDestino)
     withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh """          
             git merge origin/${ramaOrigen}
@@ -14,7 +14,7 @@ def merge(String ramaOrigen, String ramaDestino){
 
 def tag(String version, String descripcion){
     println "Realizando Tag: ${version} descripcion:  ${descripcion}"
-    git branch: "main", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'    
+    obtenerRama("main")
     withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh """
             git tag -a \'${version}\' -m \'${descripcion}\'
@@ -33,4 +33,9 @@ def verifyBranchName(){
 		    return 'CD'
 	    }
     }
+}
+
+def obtenerRama(String rama){
+    println "Obteniendo rama ${rama}"
+    git branch: "${rama}", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'
 }
