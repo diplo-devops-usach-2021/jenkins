@@ -3,8 +3,8 @@ package cl.devops
 
 static def obtieneRamaActual(){
     def ramaActual = bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
-    println ramaActual
-    return ramaActual
+    result = ramaActual.readLines().drop(1).join(" ")    
+    return result
 }
 
 static def merge(String ramaOrigen, String ramaDestino){
