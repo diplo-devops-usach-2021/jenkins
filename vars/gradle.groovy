@@ -28,7 +28,7 @@ def call(String pipelineType){
 		}
 		if(params.Stage.contains('nexusUpload')){
 			stage('nexusUpload') {
-				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.jar", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
+				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/libs/${pom.artifactId}-${pom.version}.jar", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
 			}
 		}
 		if("${env.BRANCH_NAME}" == "develop" && params.Stage.contains('gitCreateRelease')){
