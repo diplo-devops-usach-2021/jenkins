@@ -91,7 +91,7 @@ def call(String pipelineType){
 	  
 		stage('Tareas SCM') {
 			Git git = new Git()
-			def ramaOrigen = git.obtieneRamaActual()
+			def ramaOrigen = "${env.BRANCH_NAME}"
 			println ramaOrigen		
 			git.merge(ramaOrigen, "main".toString())
 			git.merge(ramaOrigen, "develop".toString())
