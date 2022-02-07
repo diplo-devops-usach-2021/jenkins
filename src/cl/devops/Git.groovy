@@ -18,7 +18,7 @@ def tag(String version, String descripcion){
     withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh """
             git tag -a \'${version}\' -m \'${descripcion}\'
-            git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/diplo-devops-usach-2021/ms-iclab.git
+            git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/diplo-devops-usach-2021/ms-iclab.git --tags
         """
     }
 }
