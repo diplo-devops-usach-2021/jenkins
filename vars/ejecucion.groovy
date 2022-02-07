@@ -19,6 +19,7 @@ def call() {
             stage('Pipeline') {
                 steps {
                     script {
+                        cleanWs()
                         println 'Pipeline'
                             
                         if(verifyBranchName() == 'main'){
