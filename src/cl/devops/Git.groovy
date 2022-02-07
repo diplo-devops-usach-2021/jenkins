@@ -8,7 +8,7 @@ def merge(String ramaOrigen, String ramaDestino){
     git fetch --all
     """
     println "Paso 1"
-    sh(returnStdout:false , script: "git checkout master")
+    sh(returnStdout:false , script: "git checkout ${ramaDestino}")
     println "Paso 2"
     sh(returnStdout:false , script: "git merge ${ramaOrigen}")
     println "Paso 3"
