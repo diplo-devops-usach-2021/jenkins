@@ -96,7 +96,6 @@ def call(String pipelineType){
 			sleep 10
 			git.merge(ramaOrigen, "develop")
 
-			figlet "pom"
 			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
