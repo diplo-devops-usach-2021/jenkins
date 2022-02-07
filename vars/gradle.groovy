@@ -9,95 +9,58 @@ def call(String pipelineType){
 	figlet 'Gradle'
 	if (pipelineType == 'CI') {
 		figlet 'Integracion Continua'
-
 		if (params.Stage.contains('build')) {
-		  stage('Build & Unit Test'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
+		  stage('Compile & Unit Test & Package'){
 				bat "gradle clean build"
 			}
-		} else { println 'No ha especificado ejecutar el Stage: BUILD' }
-		
-		if (params.Stage.contains('sonar')) {	
-			stage('Sonar'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-				def scannerHome = tool 'sonar-scanner';
-		        withSonarQubeEnv('sonar-server'){
-					bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ms-iclab -Dsonar.sources=src -Dsonar.java.binaries=build" 
+		} 
+		if(params.Stage.contains('sonar')){
+			stage('sonar') {
+		        def scannerHome = tool 'SonarScanner';
+				def nombre = "${env.JOB_NAME}-${env.BUILD_NUMBER}".replace("/","-")
+				withSonarQubeEnv('My SonarQube Server') {  
+					sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${nombre} -Dsonar.java.binaries=build/classes"
 				}
 			}
-		} else { println 'No ha especificado ejecutar el Stage: SONAR' }
-			
-		if (params.Stage.contains('run')) {	
-			stage('Run'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-				bat "start /b gradle bootRun"
-				sleep 10
+		}
+		if(params.Stage.contains('nexusUpload')){
+			stage('nexusUpload') {
+				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.jar", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
 			}
-		} else { println 'No ha especificado ejecutar el Stage: RUN' }
-		
-		if (params.Stage.contains('test')) {	
-			stage('Test'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-				bat "start chrome http://localhost:8081/rest/mscovid/test?msg=testing"
+		}
+		if("${env.BRANCH_NAME}" == "develop" && params.Stage.contains('gitCreateRelease')){
+			stage('gitCreateRelease') {					
+				git.crearRama("release-v${pom.version}")
 			}
-		} else { println 'No ha especificado ejecutar el Stage: TEST' }
-
-		if (params.Stage.contains('upload')) {	
-			stage('UploadNexus') {
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-	          nexusPublisher nexusInstanceId: 'nexus-server', nexusRepositoryId: 'test-repo', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'C:/ProgramData/Jenkins/.jenkins/workspace/e_15_pipeline-ci_feature-library/build/libs/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-	        }
-	  } else { println 'No ha especificado ejecutar el Stage: UPLOAD' }
-
+		}			
 	} else {
 		figlet 'Delivery Continuo'
-
-		if (params.Stage.contains('nexus')) {
-			stage('DownloadNexus'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-				bat "curl -X GET -u admin:patito_24 http://localhost:8082/repository/test-repo/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O"
-			}
-		} else { println 'No ha especificado ejecutar el Stage: NEXUS' }
-
-		if (params.Stage.contains('run')) {	
-			stage('RunSnapshotJar'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-				bat "start /b gradle bootRun"
-				sleep 10
-			}
-		} else { println 'No ha especificado ejecutar el Stage: RUN' }
-
-		if (params.Stage.contains('test')) {	
-			stage('Test'){
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-				bat "start chrome http://localhost:8081/rest/mscovid/test?msg=testing"
-			}
-		} else { println 'No ha especificado ejecutar el Stage: TEST' }
-
-		if (params.Stage.contains('upload')) {	
-			stage('UploadNexus') {
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-	          nexusPublisher nexusInstanceId: 'nexus-server', nexusRepositoryId: 'test-repo', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'C:/Users/psantacruz/Documents/diplomado-devops/ejemplo-gradle2/ejemplo-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '2.0.0']]]
-	        }
-	  } else { println 'No ha especificado ejecutar el Stage: UPLOAD' }
-	  
-		stage('Tareas SCM') {
-			Git git = new Git()
+		stage("gitDiff"){
+			sh "git diff"
+		}
+		stage("nexusDownload"){
+			def groupId = pom.groupId.replace(".","/")
+			sh "curl -X GET -u admin:yakarta123. http://nexus:8081/repository/test-nexus/${groupId}/${pom.artifactId}/${pom.version}/${pom.artifactId}-${pom.version}.jar -O"
+		}
+		stage('run'){
+			sh "nohup gradle bootRun &"
+			sleep(10)
+		}
+		stage("test"){
+			sh "curl -X GET 'http://jenkins:8082/rest/mscovid/test?msg=testing'"
+		}
+		stage("gitMergeMaster"){
 			def ramaOrigen = "${env.BRANCH_NAME}"		
 			git.merge(ramaOrigen, "main")
+		}
+		stage("gitMergeDevelop"){
+			def ramaOrigen = "${env.BRANCH_NAME}"		
 			git.merge(ramaOrigen, "develop")
-			def pom = readMavenPom()
+		}
+		stage("gitTagMaster"){
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
+	  }
 	}
 }
 
