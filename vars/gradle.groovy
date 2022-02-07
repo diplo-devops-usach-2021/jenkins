@@ -90,10 +90,10 @@ def call(String pipelineType){
 	  
 		stage('Tareas SCM') {
 			String ramaOrigen = obtieneRamaActual()			
-			git.merge(ramaOrigen, "main")
-			git.merge(ramaOrigen, "develop")
+			Git.merge(ramaOrigen, "main")
+			Git.merge(ramaOrigen, "develop")
 			def pom = readMavenPom()
-			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
+			Git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
 	}
 }
