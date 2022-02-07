@@ -38,6 +38,18 @@ def call(String pipelineType){
 				}
 			}
 		}
+		if(params.Stage.contains('nexusUpload')){
+			stage('nexusUpload') {
+				STAGE = env.STAGE_NAME
+				def pom = readMavenPom()
+				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.ja", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
+			}
+		}
+		if(params.Stage.contains('gitCreateRelease')){
+			stage('gitCreateRelease') {
+				println "Aca deberia crear la release"
+			}
+		}
 	} /*else {
 		figlet 'Delivery Continuo'
 		if(params.Stage.contains('run')){		
