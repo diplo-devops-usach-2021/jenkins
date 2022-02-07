@@ -39,12 +39,10 @@ def call() {
                         }
                         if (params.buildTool.equals("gradle")){
                             println "Selecciono GRADLE"
-                            def tool = load 'gradle.groovy'
-                            tool.gradle(TIPO)
+                            gradle(TIPO)
                         } else {
                             println "Selecciono MAVEN"
-                            def tool = load 'maven.groovy'
-                            tool.maven(TIPO)
+                            maven(TIPO)
                         }
                         
                     }
