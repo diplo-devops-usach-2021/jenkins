@@ -9,7 +9,7 @@ def obtieneRamaActual(){
 
 def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
-    sh """
+    bat """
     git remote update
     git fetch 
     git checkout --track origin/main
