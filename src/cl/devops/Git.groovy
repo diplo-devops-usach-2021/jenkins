@@ -11,8 +11,7 @@ def merge(String ramaOrigen, String ramaDestino){
         """
     }
 }
-//git config --global user.email "jgarciam@gmail.com"
-//git config --global user.name "Jorge Garcia"
+
 def tag(String version, String descripcion){
     println "Realizando Tag: ${version} descripcion:  ${descripcion}"
     git branch: "main", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'    
@@ -21,5 +20,17 @@ def tag(String version, String descripcion){
             git tag -a \'${version}\' -m \'${descripcion}\'
             git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/diplo-devops-usach-2021/ms-iclab.git --tags
         """
+    }
+}
+
+def verifyBranchName(){
+	if (env.GIT_BRANCH.contains('feature-') || env.GIT_BRANCH.contains('develop')){
+		return 'CI'
+	} else {
+        if (env.GIT_BRANCH.contains('main')){
+            return 'main'
+        } else {
+		    return 'CD'
+	    }
     }
 }
