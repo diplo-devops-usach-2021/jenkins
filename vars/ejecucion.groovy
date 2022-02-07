@@ -56,15 +56,15 @@ def call() {
 		}
 
         post {
-            always {
-                slackSend channel: '#jenkins-ci', color: 'normal', message: "${USUARIO}" + ' ha ejecutado un Pipeline.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
-                slackSend channel: '#jenkins-ci', color: 'normal', message: 'Job Name: ' + env.JOB_NAME + ', BuildTool: ' +  params.buildTool + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
-            }
             success{
-                slackSend channel: '#jenkins-ci', color: '#29AE4A', message: 'Ejecucion exitosa de ' + TIPO + '. Se han ejecutado los siguientes Stages: ' + params.Stage + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
+                slackSend channel: '#jenkins-ci', color: '#29AE4A'
+                , message: "[Grupo5][Pipeline ${TIPO}][Rama: ${env.BRANCH_NAME}][Stage: ${params.Stage}][Resultado: Ok]."
+                , teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
             failure {
-                slackSend channel: '#jenkins-ci', color: '#EC4D34', message: 'Ejecucion Fallida en Stage: ' + "${STAGE}" + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
+                slackSend channel: '#jenkins-ci', color: '#EC4D34'
+                , message: "[Grupo5][Pipeline ${TIPO}][Rama: ${env.BRANCH_NAME}][Stage: ${params.Stage}][Resultado: No Ok]."
+                , teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
         }
 	}
