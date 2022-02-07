@@ -63,8 +63,8 @@ def call(String pipelineType){
 		if(params.Stage.contains('run')){
 			stage("run"){
 				sh "chmod +X ${pom.artifactId}-1.0.0.jar"
-				sh "nohup java -jar ${pom.artifactId}-1.0.0.jar"
-				sleep(20)
+				sh "nohup java -jar ${pom.artifactId}-1.0.0.jar &"
+				sleep(10)
 			}
 		}
 		if(params.Stage.contains('test')){
