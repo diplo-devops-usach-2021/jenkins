@@ -48,42 +48,36 @@ def call(String pipelineType){
 		}
 	} else {
 		figlet 'Delivery Continuo'
-		if(params.Stage.contains('gitDiff')){
-			stage("gitDiff"){
-
-			}
+		stage("gitDiff"){
+			sh "git diff"
 		}
-		if(params.Stage.contains('nexusDownload')){
-			stage("nexusDownload"){
-				def groupId = pom.groupId.replace(".","/")
-				sh "curl -X GET -u admin:yakarta123. http://nexus:8081/repository/test-nexus/${groupId}/${pom.artifactId}/1.0.0/${pom.artifactId}-1.0.0.jar -O"
+		stage("nexusDownload"){
+			def groupId = pom.groupId.replace(".","/")
+			sh "curl -X GET -u admin:yakarta123. http://nexus:8081/repository/test-nexus/${groupId}/${pom.artifactId}/1.0.0/${pom.artifactId}-1.0.0.jar -O"
 
-			}
 		}
-		if(params.Stage.contains('run')){
-			stage("run"){
-
-				sh 'nohup bash mvnw spring-boot:run &'
-                        
-				//sh "chmod +X ${pom.artifactId}-1.0.0.jar"
-				//sh "nohup java -jar ${pom.artifactId}-1.0.0.jar &"
-				sleep(10)
-			}
+		stage("run"){
+			sh 'nohup bash mvnw spring-boot:run &'
+			sleep(10)
 		}
-		if(params.Stage.contains('test')){
-			stage("test"){
-				sh "curl -X GET 'http://jenkins:8082/rest/mscovid/test?msg=testing'"
-			}
+		stage("test"){
+			sh "curl -X GET 'http://jenkins:8082/rest/mscovid/test?msg=testing'"
 		}
-
-		/*stage('Tareas SCM') {
-			String ramaOrigen = obtieneRamaActual()			
+		stage("gitMergeMaster"){
+			Git git = new Git()
+			def ramaOrigen = "${env.BRANCH_NAME}"		
 			git.merge(ramaOrigen, "main")
+		}
+		stage("gitMergeDevelop"){
+			Git git = new Git()
+			def ramaOrigen = "${env.BRANCH_NAME}"		
 			git.merge(ramaOrigen, "develop")
+		}
+		stage("gitTagMaster"){
+			Git git = new Git()
 			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
-		}*/
-
+		}
 	}
 } 
 return this;
