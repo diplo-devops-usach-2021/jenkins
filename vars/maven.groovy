@@ -7,6 +7,8 @@ import cl.devops.*
 
 def call(String pipelineType){
 	figlet 'Maven'
+	Git git = new Git()
+	git.obtenerRama("${env.BRANCH_NAME}")
 	if (pipelineType == 'CI') {
 		figlet 'Integracion Continua'
 		if (params.Stage.contains('compile')) {
@@ -36,7 +38,7 @@ def call(String pipelineType){
 				}
 			}
 		}
-	} else {
+	} /*else {
 		figlet 'Delivery Continuo'
 		if(params.Stage.contains('run')){		
 		    stage('Run') {
@@ -72,6 +74,6 @@ def call(String pipelineType){
 			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
-	}
+	}*/
 } 
 return this;
