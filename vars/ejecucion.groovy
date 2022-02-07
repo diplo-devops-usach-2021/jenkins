@@ -43,7 +43,7 @@ def call() {
                             tool.gradle(TIPO)
                         } else {
                             println "Selecciono MAVEN"
-                            def ejecucion = load 'maven.groovy'
+                            def tool = load 'maven.groovy'
                             tool.maven(TIPO)
                         }
                         
