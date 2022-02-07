@@ -61,7 +61,7 @@ def call(String pipelineType){
 		}
 		if(params.Stage.contains('run')){
 			stage("run"){
-				sh "nohup java -jar ${pom.artifactId}.jar"
+				sh "nohup java -jar ${pom.artifactId}-${pom.version}.jar"
 				sleep(20)
 			}
 		}
