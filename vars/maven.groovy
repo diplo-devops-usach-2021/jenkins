@@ -46,42 +46,39 @@ def call(String pipelineType){
 				git.crearRama("release-v${pom.version}")
 			}
 		}
-	} /*else {
+	} else {
 		figlet 'Delivery Continuo'
-		if(params.Stage.contains('run')){		
-		    stage('Run') {
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-		        bat "start /min mvn spring-boot:run &"
-		    }
-		} else { println 'No ha especificado ejecutar el Stage: RUN' }
+		if(params.Stage.contains('gitDiff')){
+			stage("gitDiff"){
 
-		if(params.Stage.contains('sonar')){
-			stage('Sonar') {
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-		        def scannerHome = tool 'sonar-scanner';
-		        withSonarQubeEnv('sonar-server') {
-		        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven-developer -Dsonar.sources=src -Dsonar.java.binaries=build"
-					}
 			}
-		} else { println 'No ha especificado ejecutar el Stage: SONAR' } 
-
-		if(params.Stage.contains('testApp')){		
-		    stage('Test Applications') {
-				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-		        bat "start chrome http://localhost:8081/rest/mscovid/test?msg=testing"
+		}
+		if(params.Stage.contains('nexusDownload')){
+			stage("nexusDownload"){
+				def groupId = pom.groupId.replace(".","/")
+				sh "curl -X GET -u admin:yakarta123. http://nexus:8081/repository/test-nexus/${groupId}/${pom.artifactId}/${pom.version}/${pom.artifactId}-${pom.version} -O"
 			}
-		} else { println 'No ha especificado ejecutar el Stage: Test Applications' }
+		}
+		if(params.Stage.contains('run')){
+			stage("run"){
+				sh 'nohup bash mvnw spring-boot:run &'
+				sleep(30)
+			}
+		}
+		if(params.Stage.contains('test')){
+			stage("test"){
+				sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+			}
+		}
 
-		stage('Tareas SCM') {
+		/*stage('Tareas SCM') {
 			String ramaOrigen = obtieneRamaActual()			
 			git.merge(ramaOrigen, "main")
 			git.merge(ramaOrigen, "develop")
 			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
-		}
-	}*/
+		}*/
+		
+	}
 } 
 return this;
