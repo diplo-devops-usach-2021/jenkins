@@ -61,13 +61,13 @@ def call(String pipelineType){
 		}
 		if(params.Stage.contains('run')){
 			stage("run"){
-				sh 'nohup bash mvnw spring-boot:run &'
-				sleep(30)
+				sh "nohup java -jar ${pom.artifactId}.jar"
+				sleep(20)
 			}
 		}
 		if(params.Stage.contains('test')){
 			stage("test"){
-				sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+				sh "curl -X GET 'http://localhost:8082/rest/mscovid/test?msg=testing'"
 			}
 		}
 
@@ -78,7 +78,7 @@ def call(String pipelineType){
 			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}*/
-		
+
 	}
 } 
 return this;
