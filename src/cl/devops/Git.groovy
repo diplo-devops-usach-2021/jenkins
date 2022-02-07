@@ -7,6 +7,7 @@ def merge(String ramaOrigen, String ramaDestino){
     withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh """          
             git merge origin/${ramaOrigen}
+            git push origin/${ramaDestino}
         """
     }
 }
