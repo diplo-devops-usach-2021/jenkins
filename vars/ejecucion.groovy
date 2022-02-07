@@ -3,7 +3,7 @@ import cl.devops.*
 def call() {
 
     def USUARIO
-
+    def TIPO
     pipeline {
         agent any
 
