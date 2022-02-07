@@ -2,7 +2,7 @@ package cl.devops
 
 
 static String obtieneRamaActual(){
-    String ramaActual = bat "git rev-parse --abbrev-ref HEAD"
+    String ramaActual = bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
     return ramaActual.toString()
 }
 
