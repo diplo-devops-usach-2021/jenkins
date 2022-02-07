@@ -56,7 +56,8 @@ def call(String pipelineType){
 		if(params.Stage.contains('nexusDownload')){
 			stage("nexusDownload"){
 				def groupId = pom.groupId.replace(".","/")
-				sh "curl -X GET -u admin:yakarta123. http://nexus:8081/repository/test-nexus/${groupId}/${pom.artifactId}/${pom.version}/${pom.artifactId}-1.0.0.jar -O"
+				sh "curl -X GET -u admin:yakarta123. http://nexus:8081/repository/test-nexus/${groupId}/${pom.artifactId}/1.0.0/${pom.artifactId}-1.0.0.jar -O"
+
 			}
 		}
 		if(params.Stage.contains('run')){
