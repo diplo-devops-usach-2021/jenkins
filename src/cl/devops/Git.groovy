@@ -4,14 +4,10 @@ package cl.devops
 def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
     sh """
-    git remote update
-    git fetch --all
+        git fetch --unshallow
+        git checkout ${ramaDestino}
+        git merge ${ramaOrigen}
     """
-    println "Paso 1"
-    sh(returnStdout:false , script: "git checkout ${ramaDestino}")
-    println "Paso 2"
-    sh(returnStdout:false , script: "git merge ${ramaOrigen}")
-    println "Paso 3"
 }
 
 def tag(String version, String descripcion){
