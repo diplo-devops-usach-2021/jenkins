@@ -63,7 +63,7 @@ def call(String pipelineType){
 			}
 		} else { println 'No ha especificado ejecutar el Stage: Test Applications' }
 
-		stage('Tareas SCM'){
+		stage('Tareas SCM') {
 			String ramaOrigen = obtieneRamaActual()			
 			git.merge(ramaOrigen, "main")
 			git.merge(ramaOrigen, "develop")

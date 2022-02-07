@@ -87,6 +87,14 @@ def call(String pipelineType){
 	          nexusPublisher nexusInstanceId: 'nexus-server', nexusRepositoryId: 'test-repo', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'C:/Users/psantacruz/Documents/diplomado-devops/ejemplo-gradle2/ejemplo-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '2.0.0']]]
 	        }
 	  } else { println 'No ha especificado ejecutar el Stage: UPLOAD' }
+	  
+		stage('Tareas SCM') {
+			String ramaOrigen = obtieneRamaActual()			
+			git.merge(ramaOrigen, "main")
+			git.merge(ramaOrigen, "develop")
+			def pom = readMavenPom()
+			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
+		}
 	}
 }
 
