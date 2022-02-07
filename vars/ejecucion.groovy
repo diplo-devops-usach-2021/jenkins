@@ -36,7 +36,7 @@ def call() {
                         if(TIPO == 'OTRO'){
                             currentBuild.result = 'FAILURE'
                             error("No se puede ejecutar la rama MAIN")
-                            if (params.buildTool.equals("gradle"){
+                            if (params.buildTool.equals("gradle")){
                                 println "Selecciono GRADLE"
                                 def tool = load 'gradle.groovy'
                                 tool.gradle(TIPO)
