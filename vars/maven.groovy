@@ -9,30 +9,33 @@ def call(String pipelineType){
 	figlet 'Maven'
 	if (pipelineType == 'CI') {
 		figlet 'Integracion Continua'
-
 		if (params.Stage.contains('compile')) {
-			stage('Compile') {
+			stage('compile') {
 				STAGE = env.STAGE_NAME
-				figlet ${STAGE}
-		        bat "mvn clean compile -e"
+		        sh "./mvnw clean compile -e"
 		    }
-		} else { println 'No ha especificado ejecutar el Stage: COMPILE' }
-
-		if(params.Stage.contains('test')){
-			stage('Test') {
+		}
+		if(params.Stage.contains('unitTest')){
+			stage('unitTest') {
 				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-		        bat "mvn clean test -e"
+		        sh "./mvnw clean test -e"
 		    }
-		} else { println 'No ha especificado ejecutar el Stage: TEST' }	
-
-		if(params.Stage.contains('package')){    
-		    stage('Package') {
+		}
+		if(params.Stage.contains('jar')){    
+		    stage('jar') {
 				STAGE = env.STAGE_NAME
-				figlet "${STAGE}"
-		        bat "mvn clean package -e"
+		        sh "./mvnw clean package -e"
 		    }
-		} else { println 'No ha especificado ejecutar el Stage: PACKAGE' }
+		}
+		if(params.Stage.contains('sonar')){
+			stage('sonar') {
+				STAGE = env.STAGE_NAME
+		        def scannerHome = tool 'SonarScanner';
+				withSonarQubeEnv('My SonarQube Server') {  
+					sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-maven -Dsonar.java.binaries=build/classes"
+				}
+			}
+		}
 
 	} else {
 		figlet 'Delivery Continuo'
