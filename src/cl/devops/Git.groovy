@@ -15,4 +15,5 @@ def tag(String version, String descripcion){
     println "Realizando Tag: ${version} descripcion:  ${descripcion}"
     git branch: "main", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'
     sh "git tag -a \'${version}\' -m \'${descripcion}\'"
+    sh "git push origin --tags"
 }
