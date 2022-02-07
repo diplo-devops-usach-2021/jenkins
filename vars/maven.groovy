@@ -72,7 +72,6 @@ def call(String pipelineType){
 			git.merge(ramaOrigen, "develop")
 		}
 		stage("gitTagMaster"){
-			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
 	}
