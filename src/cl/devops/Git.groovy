@@ -3,10 +3,7 @@ package cl.devops
 
 static def obtieneRamaActual(){
     def ramaActual = bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
-    Set<String> keys = ramaActual.keySet();        
-        for (String key : keys) {
-            System.out.println(key + " -- " + ramaActual.get(key));
-        }
+    println ramaActual
     return ramaActual
 }
 
