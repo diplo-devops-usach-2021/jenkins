@@ -19,6 +19,6 @@ def tag(String version, String descripcion){
     sh """
         git config --global user.email "jgarciam@gmail.com"
         git config --global user.name "Jorge Garcia"
-        sh git push origin --tags
+        git push origin --tags
     """
 }
