@@ -57,14 +57,10 @@ def call() {
 
         post {
             success{
-                slackSend channel: '#jenkins-ci', color: '#29AE4A'
-                , message: "[Grupo5][Pipeline ${TIPO}][Rama: ${env.BRANCH_NAME}][Stage: ${params.Stage}][Resultado: Ok]."
-                , teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
+                slackSend channel: '#jenkins-ci', color: '#29AE4A', message: "[Grupo5][Pipeline ${TIPO}][Rama: ${env.BRANCH_NAME}][Stage: ${params.Stage}][Resultado: Ok].", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
             failure {
-                slackSend channel: '#jenkins-ci', color: '#EC4D34'
-                , message: "[Grupo5][Pipeline ${TIPO}][Rama: ${env.BRANCH_NAME}][Stage: ${params.Stage}][Resultado: No Ok]."
-                , teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
+                slackSend channel: '#jenkins-ci', color: '#EC4D34', message: "[Grupo5][Pipeline ${TIPO}][Rama: ${env.BRANCH_NAME}][Stage: ${params.Stage}][Resultado: No Ok].", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
         }
 	}
