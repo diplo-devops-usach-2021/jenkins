@@ -64,17 +64,14 @@ def call(String pipelineType){
 			sh "curl -X GET 'http://jenkins:8082/rest/mscovid/test?msg=testing'"
 		}
 		stage("gitMergeMaster"){
-			Git git = new Git()
 			def ramaOrigen = "${env.BRANCH_NAME}"		
 			git.merge(ramaOrigen, "main")
 		}
 		stage("gitMergeDevelop"){
-			Git git = new Git()
 			def ramaOrigen = "${env.BRANCH_NAME}"		
 			git.merge(ramaOrigen, "develop")
 		}
 		stage("gitTagMaster"){
-			Git git = new Git()
 			def pom = readMavenPom()
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
