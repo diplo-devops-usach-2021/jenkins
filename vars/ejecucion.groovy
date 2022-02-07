@@ -37,11 +37,13 @@ def call() {
                             currentBuild.result = 'FAILURE'
                             error("No se puede ejecutar la rama MAIN")
                             if (params.buildTool == 'gradle'){
-                                def ejecucion = load 'gradle.groovy'
-                                ejecucion.gradle(TIPO)
+                                println "Selecciono GRADLE"
+                                def tool = load 'gradle.groovy'
+                                tool.gradle(TIPO)
                             } else {
+                                println "Selecciono MAVEN"
                                 def ejecucion = load 'maven.groovy'
-                                ejecucion.maven(TIPO)
+                                tool.maven(TIPO)
                             }
                         }
                     }
