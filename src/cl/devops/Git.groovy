@@ -1,13 +1,13 @@
 package cl.devops
 
 
-static def obtieneRamaActual(){
-    def ramaActual = bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
-    def result = ramaActual.readLines().drop(1).join(" ")    
+def obtieneRamaActual(){
+    def stdout = bat(returnStdout:true , script: 'git rev-parse --abbrev-ref HEAD').trim()
+    def result = stdout.readLines().drop(1).join(" ")        
     return result
 }
 
-static def merge(String ramaOrigen, String ramaDestino){
+def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge ${ramaOrigen} y ${ramaDestino}"
     bat """
         git checkout ${ramaDestino} 
@@ -15,7 +15,7 @@ static def merge(String ramaOrigen, String ramaDestino){
     """
 }
 
-static def tag(String version, String descripcion){
+def tag(String version, String descripcion){
     println "Realizando Tag: ${version} descripcion:  ${descripcion}"
     bat """
         git checkout main

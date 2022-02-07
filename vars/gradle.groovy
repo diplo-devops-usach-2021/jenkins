@@ -90,12 +90,13 @@ def call(String pipelineType){
 	  } else { println 'No ha especificado ejecutar el Stage: UPLOAD' }
 	  
 		stage('Tareas SCM') {
-			def ramaOrigen = Git.obtieneRamaActual()
+			Git git = new Git()
+			def ramaOrigen = git.obtieneRamaActual()
 			println ramaOrigen		
-			Git.merge(ramaOrigen, "main".toString())
-			Git.merge(ramaOrigen, "develop".toString())
+			git.merge(ramaOrigen, "main".toString())
+			git.merge(ramaOrigen, "develop".toString())
 			def pom = readMavenPom()
-			Git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
+			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
 	}
 }
