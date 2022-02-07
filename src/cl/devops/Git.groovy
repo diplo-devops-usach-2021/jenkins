@@ -11,7 +11,8 @@ def obtieneRamaActual(){
 
 def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge ${ramaOrigen} y ${ramaDestino}"
-    bat(returnStdout:false , script: "git checkout --track origin/${ramaDestino}")
+    bat(returnStdout:false , script: "git pull origin main")
+    bat(returnStdout:false , script: "git checkout ${ramaDestino}")
     bat(returnStdout:false , script: "git merge ${ramaOrigen}")
 }
 
