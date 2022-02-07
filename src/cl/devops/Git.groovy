@@ -39,6 +39,7 @@ def crearRama(String nombreRama){
     withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh """
             git checkout -b ${nombreRama}
+            git push --set-upstream origin ${nombreRama} https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/diplo-devops-usach-2021/ms-iclab.git
         """
     }
 }
