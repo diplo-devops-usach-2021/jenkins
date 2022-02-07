@@ -6,7 +6,7 @@ String obtieneRamaActual(){
 				script: "git rev-parse --abbrev-ref HEAD",
 				returnStdout: true
             )
-    return ramaActual
+    return ramaActual.toString()
 }
 
 def merge(String ramaOrigen, String ramaDestino){

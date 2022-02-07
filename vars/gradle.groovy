@@ -90,21 +90,13 @@ def call(String pipelineType){
 	  } else { println 'No ha especificado ejecutar el Stage: UPLOAD' }
 	  
 		stage('Tareas SCM') {
-			String ramaOrigen = obtieneRamaActual()			
-			Git.merge(ramaOrigen, "main")
-			Git.merge(ramaOrigen, "develop")
+			String ramaOrigen = Git.obtieneRamaActual()			
+			Git.merge(ramaOrigen, "main".toString())
+			Git.merge(ramaOrigen, "develop".toString())
 			def pom = readMavenPom()
 			Git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
 	}
-}
-
-String obtieneRamaActual(){
-    String ramaActual = bat(
-				script: "git rev-parse --abbrev-ref HEAD",
-				returnStdout: true
-            )
-    return ramaActual
 }
 
 return this;
