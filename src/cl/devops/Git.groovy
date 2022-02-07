@@ -3,6 +3,9 @@ package cl.devops
 
 static def obtieneRamaActual(){
     def ramaActual = bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
+    ramaActual.forEach((key,value) -> {
+        System.out.println(key + " -> " + value);
+});
     return ramaActual
 }
 
