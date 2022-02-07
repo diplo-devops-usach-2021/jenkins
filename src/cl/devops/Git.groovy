@@ -4,7 +4,7 @@ package cl.devops
 def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
     sh """
-        git checkout -f origin/${ramaDestino}
+        git checkout -f ${ramaDestino}
         git merge ${ramaOrigen}
     """
 }
