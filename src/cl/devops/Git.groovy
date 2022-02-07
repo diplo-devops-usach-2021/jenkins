@@ -3,10 +3,9 @@ package cl.devops
 
 def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
-    //git branch: "${ramaDestino}", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'
+    git branch: "${ramaDestino}", credentialsId: 'github-user', url: 'https://github.com/diplo-devops-usach-2021/ms-iclab.git'
     withCredentials([usernamePassword(credentialsId: 'github-user', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         sh """          
-            git checkout ${ramaDestino}
             git merge origin/${ramaOrigen}
         """
     }
