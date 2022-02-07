@@ -69,7 +69,7 @@ def call(String pipelineType){
 		}
 		if(params.Stage.contains('test')){
 			stage("test"){
-				sh "curl -X GET 'http://localhost:8082/rest/mscovid/test?msg=testing'"
+				sh "curl -X GET 'http://jenkins:8082/rest/mscovid/test?msg=testing'"
 			}
 		}
 
