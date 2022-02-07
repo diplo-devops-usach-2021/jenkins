@@ -3,7 +3,9 @@ package cl.devops
 
 def obtieneRamaActual(){
     def stdout = bat(returnStdout:true , script: 'git rev-parse --abbrev-ref HEAD').trim()
-    def result = stdout.readLines().drop(1).join(" ")        
+    def result = stdout.readLines().drop(1).join(" ")
+    println result
+    println stdout     
     return result
 }
 
