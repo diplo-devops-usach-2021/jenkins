@@ -99,7 +99,7 @@ def call(String pipelineType){
 }
 
 String obtieneRamaActual(){
-    String ramaActual = sh(
+    String ramaActual = bat(
 				script: "git rev-parse --abbrev-ref HEAD",
 				returnStdout: true
             )
