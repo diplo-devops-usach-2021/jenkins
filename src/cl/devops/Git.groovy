@@ -2,8 +2,7 @@ package cl.devops
 
 
 static def obtieneRamaActual(){
-    String ramaActual = bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
-    return ramaActual
+    return bat returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
 }
 
 static def merge(String ramaOrigen, String ramaDestino){
