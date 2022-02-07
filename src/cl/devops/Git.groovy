@@ -10,8 +10,11 @@ def obtieneRamaActual(){
 def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
     bat(returnStdout:false , script: "git pull origin ${ramaDestino}")
+    println "Paso 1"
     bat(returnStdout:false , script: "git checkout ${ramaDestino}")
+    println "Paso 2"
     bat(returnStdout:false , script: "git merge ${ramaOrigen}")
+    println "Paso 3"
 }
 
 def tag(String version, String descripcion){
