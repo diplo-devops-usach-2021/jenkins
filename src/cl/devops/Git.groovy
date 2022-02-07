@@ -11,10 +11,8 @@ def merge(String ramaOrigen, String ramaDestino){
     println "Realizando merge desde ${ramaOrigen} a ${ramaDestino}"
     bat """
     git remote update
-    git fetch 
-    git checkout --track origin/main
+    git fetch --all
     """
-    bat(returnStdout:false , script: "git fetch --all")
     println "Paso 1"
     bat(returnStdout:false , script: "git checkout master")
     println "Paso 2"
