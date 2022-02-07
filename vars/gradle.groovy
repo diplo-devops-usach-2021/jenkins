@@ -60,7 +60,6 @@ def call(String pipelineType){
 		stage("gitTagMaster"){
 			git.tag("${pom.version}","Nuevo tag generado desde Jenknins")
 		}
-	  }
 	}
 }
 
