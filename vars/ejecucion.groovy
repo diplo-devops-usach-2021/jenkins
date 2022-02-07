@@ -32,7 +32,7 @@ def call() {
                         println "Pipeline iniciado por ${USUARIO}"
                         Git git =  new Git()
                         TIPO = git.verifyBranchName()
-                        println "El tipo de ejecucion es: ${TIPO}"                  
+                        println "El tipo de ejecucion es: ${TIPO} ${params.buildTool}"                  
                         if(TIPO == 'OTRO'){
                             currentBuild.result = 'FAILURE'
                             error("No se puede ejecutar la rama MAIN")
