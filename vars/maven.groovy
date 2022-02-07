@@ -42,7 +42,7 @@ def call(String pipelineType){
 			stage('nexusUpload') {
 				STAGE = env.STAGE_NAME
 				def pom = readMavenPom()
-				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.ja", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
+				nexusArtifactUploader artifacts: [[artifactId: "${pom.artifactId}", file: "build/${pom.artifactId}-${pom.version}.jar", type: 'jar']], credentialsId: 'nexus', groupId: "${pom.groupId}", nexusUrl: 'nexus:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test-nexus', version: "${pom.version}"
 			}
 		}
 		if(params.Stage.contains('gitCreateRelease')){
