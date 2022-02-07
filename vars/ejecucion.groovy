@@ -55,7 +55,7 @@ def call() {
             }
 		}
 
-        /*post {
+        post {
             always {
                 slackSend channel: '#jenkins-ci', color: 'normal', message: "${USUARIO}" + ' ha ejecutado un Pipeline.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
                 slackSend channel: '#jenkins-ci', color: 'normal', message: 'Job Name: ' + env.JOB_NAME + ', BuildTool: ' +  params.buildTool + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
@@ -66,7 +66,7 @@ def call() {
             failure {
                 slackSend channel: '#jenkins-ci', color: '#EC4D34', message: 'Ejecucion Fallida en Stage: ' + "${STAGE}" + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
-        }*/
+        }
 	}
 
 }
