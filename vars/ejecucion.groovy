@@ -20,8 +20,7 @@ def call() {
                 steps {
                     script {
                         cleanWs()
-                        println 'Pipeline'
-                            
+                        println 'Pipeline'                            
                         if(verifyBranchName() == 'main'){
                             figlet 'No se permite ejecutar desde main'
                         } else {
