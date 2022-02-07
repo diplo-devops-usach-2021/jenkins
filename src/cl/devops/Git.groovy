@@ -28,7 +28,7 @@ def verifyBranchName(){
 		return 'CI'
 	} else {
         if (env.GIT_BRANCH.contains('main')){
-            return 'main'
+            return 'OTRO'
         } else {
 		    return 'CD'
 	    }

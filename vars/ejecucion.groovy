@@ -25,21 +25,23 @@ def call() {
             stage('Pipeline') {
                 steps {
                     script {
+                        cleanWs()
                         wrap([$class: 'BuildUser']) {
                             USUARIO = env.BUILD_USER_FIRST_NAME + " " + env.BUILD_USER_LAST_NAME
-                        }
-                        cleanWs()
+                        }                        
                         println "Pipeline iniciado por ${USUARIO}"
                         Git git =  new Git()
-                        BRANCH = git.verifyBranchName()
-                        println "El nombre del branch a ejecutar : ${BRANCH}"                  
-                        if(BRANCH == 'main'){
+                        TIPO = git.verifyBranchName()
+                        println "El tipo de ejecucion es: ${TIPO}"                  
+                        if(TIPO == 'OTRO'){
                             currentBuild.result = 'FAILURE'
                             error("No se puede ejecutar la rama MAIN")
                             if (params.buildTool == 'gradle'){
-                                gradle(BRANCH)
+                                def ejecucion = load 'gradle.groovy'
+                                ejecucion.gradle(TIPO)
                             } else {
-                                maven(BRANCH)
+                                def ejecucion = load 'maven.groovy'
+                                ejecucion.maven(TIPO)
                             }
                         }
                     }
@@ -53,7 +55,7 @@ def call() {
                 slackSend channel: '#jenkins-ci', color: 'normal', message: 'Job Name: ' + env.JOB_NAME + ', BuildTool: ' +  params.buildTool + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
             success{
-                slackSend channel: '#jenkins-ci', color: '#29AE4A', message: 'Ejecucion exitosa de ' + BRANCH + '. Se han ejecutado los siguientes Stages: ' + params.Stage + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
+                slackSend channel: '#jenkins-ci', color: '#29AE4A', message: 'Ejecucion exitosa de ' + TIPO + '. Se han ejecutado los siguientes Stages: ' + params.Stage + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
             }
             failure {
                 slackSend channel: '#jenkins-ci', color: '#EC4D34', message: 'Ejecucion Fallida en Stage: ' + "${STAGE}" + '.', teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'slack-token'
